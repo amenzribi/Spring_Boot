@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Set;
 
 @Getter
@@ -38,6 +39,10 @@ public class Cours implements Serializable {
                 ", prix=" + prix +
                 ", creneau=" + creneau +
                 '}';
+    }
+
+    public Collection<Skieur> getSkieur() {
+        return null;
     }
 }
 

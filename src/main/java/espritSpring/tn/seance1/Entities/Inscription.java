@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -17,8 +19,9 @@ public class Inscription implements Serializable {
     @Id
     private Long numInscription;
     private Integer numSemaine;
+    private LocalDate dateInscription;
     @ManyToOne
-     Skieur skieurs;
+    private Skieur skieurs;
 
 @ManyToOne
 private Cours cours;

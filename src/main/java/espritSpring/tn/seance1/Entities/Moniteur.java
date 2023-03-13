@@ -1,5 +1,6 @@
 package espritSpring.tn.seance1.Entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,10 +14,12 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table
 public class Moniteur implements Serializable {
     @Id
+    @Column(name = "idMoniteur")
     private Long numMoniteur;
     private String nomM;
     private String prenomM;

@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.xml.crypto.Data;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -17,8 +18,8 @@ import java.util.Date;
 public class Abonnement implements Serializable {
     @Id
     private Long numAbon;
-    private Date dateDebut;
-    private Date dateFin ;
+    private LocalDate dateDebut;
+    private LocalDate dateFin ;
     private Float prixAbon;
 
     @Enumerated(EnumType.STRING)
@@ -33,5 +34,8 @@ public class Abonnement implements Serializable {
                 ", prixAbon=" + prixAbon +
                 ", typeAbonnement=" + typeAbonnement +
                 '}';
+    }
+
+    public void setSkieur(Skieur skieur) {
     }
 }
