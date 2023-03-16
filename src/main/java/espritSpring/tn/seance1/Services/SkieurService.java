@@ -3,11 +3,15 @@ package espritSpring.tn.seance1.Services;
 import espritSpring.tn.seance1.Entities.*;
 import espritSpring.tn.seance1.Repository.*;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -132,46 +136,38 @@ public class SkieurService implements IskieurServ{
 
      */
 
-    @Override
-   public Skieur addSkieurAndAssignToCours(Skieur skieur, Long numCours) {
-        //créer un nouvel abonnement pour le skieur
-       Abonnement abonnement = new Abonnement();
-       abonnement.setDateDebut(LocalDate.now());
-       abonnement.setDateFin(LocalDate.now().plusMonths(6)); // abonnement de 6 mois
-       abonnement.setSkieur(skieur);
 
-       //sauvegarder l'abonnement dans la base de données
-       abonnementRepository.save(abonnement);
+    @Transactional//(rollbackOn = true)
+   public Skieur addSkieurAndAssignToCours(Skieur skieur, Long numCours ) {
 
-       //créer une nouvelle inscription pour le skieur et l'abonnement
-       Inscription inscription = new Inscription();
-       inscription.setDateInscription(LocalDate.now());
-       inscription.setCours(coursRepo.findByNumCours(numCours));
-      // inscription.setAbonnement(abonnementRepository.findBynumSkieur(n));
+       Skieur s= skieurRepository.save(skieur);
 
-       //sauvegarder l'inscription dans la base de données
-       inscriptionRepository.save(inscription);
 
-       //sauvegarder le skieur dans la base de données
-       skieurRepository.save(skieur);
-
-       //récupérer le cours correspondant
        Cours cours = coursRepo.findByNumCours(numCours);
 
-       //vérifier si le cours existe
-       if (cours == null) {
-           throw new IllegalArgumentException("Le numéro de cours fourni est invalide : " + numCours);
-       }
+        Set<Inscription> inscriptions = s.getInscriptions();
+        inscriptions = s.getInscriptions();
+        inscriptions.stream().forEach(
+                inscription -> {
+                    inscription.setCours(cours);
+                }
+        );
 
-       //ajouter le skieur à la liste des skieurs inscrits au cours
-       inscription.getCours().getSkieur().add(skieur);
-
-       //sauvegarder les modifications dans la base de données
-       coursRepo.save(inscription.getCours());
 
        return skieur;
    }
 
 
+
+       /*
+       if (cours == null) {
+           throw new IllegalArgumentException("Le numéro de cours fourni est invalide : " + numCours);
+       }
+
+        */
+     /*   Inscription inscription1 = inscriptionRepository.save(inscription);
+        inscription1.getCours().getSkieur().add(skieur);
+
+      */
 
 }
